@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Freelance Rate & Project Calculator</title>
+  <style>
+    :root {
+      --bg: #0f172a;
+      --card-bg: #1e293b;
+      --accent: #38bdf8;
+      --accent-hover: #0284c7;
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+      --border: #334155;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: system-ui, -apple-system, sans-serif;
+      background-color: var(--bg);
+      color: var(--text-main);
+      line-height: 1.6;
+      padding: 2rem 1rem;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    header {
+      text-align: center;
+      margin-bottom: 3rem;
+    }
+
+    header h1 {
+      font-size: 2.5rem;
+      color: var(--accent);
+      margin-bottom: 0.5rem;
+    }
+
+    header p {
+      color: var(--text-muted);
+      font-size: 1.1rem;
+    }
+
+    /* CALCULATOR GRID */
+    .calc-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 2rem;
+      margin-bottom: 3rem;
+    }
+
+    .card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 0.75rem;
+      padding: 1.75rem;
+    }
+
+    .card h2 {
+      font-size: 1.3rem;
+      margin-bottom: 1.25rem;
+      color: var(--accent);
+    }
+
+    .form-group {
+      margin-bottom: 1.25rem;
+    }
+
+    label {
+      display: block;
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      margin-bottom: 0.4rem;
+    }
+
+    input, select {
+      width: 100%;
+      padding: 0.75rem;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 0.375rem;
+      color: var(--text-main);
+      font-size: 1rem;
+    }
+
+    /* RESULTS SECTION */
+    .result-box {
+      display: flex;
+      flex-direction: column;
+      gap: 1.25rem;
+    }
+
+    .stat {
+      background: var(--bg);
+      padding: 1rem;
+      border-radius: 0.5rem;
+      border-left: 4px solid var(--accent);
+    }
+
+    .stat-label {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+    }
+
+    .stat-value {
+      font-size: 1.75rem;
+      font-weight: 700;
+      color: var(--text-main);
+    }
+
+    /* AFFILIATE SECTION */
+    .affiliates {
+      margin: 3rem 0;
+    }
+
+    .affiliate-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 1.5rem;
+      margin-top: 1rem;
+    }
+
+    .aff-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 0.5rem;
+      padding: 1.25rem;
+    }
+
+    .aff-card h3 {
+      font-size: 1.1rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .aff-card p {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      margin-bottom: 1rem;
+    }
+
+    .aff-link {
+      color: var(--accent);
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 0.9rem;
+    }
+
+    /* CONTENT / SEO SECTION */
+    .content-section {
+      border-top: 1px solid var(--border);
+      padding-top: 2.5rem;
+    }
+
+    .content-section h2 {
+      margin-bottom: 1rem;
+    }
+
+    .content-section p {
+      color: var(--text-muted);
+      margin-bottom: 1.5rem;
+    }
+
+    footer {
+      text-align: center;
+      margin-top: 4rem;
+      color: var(--text-muted);
+      font-size: 0.85rem;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <header>
+      <h1>Freelance Rate Calculator</h1>
+      <p>Calculate your minimum hourly rate and estimate fair project pricing based on financial goals.</p>
+    </header>
+
+    <div class="calc-grid">
+      <!-- INPUT FORM -->
+      <div class="card">
+        <h2>Your Parameters</h2>
+        
+        <div class="form-group">
+          <label for="income">Target Monthly Net Income ($)</label>
+          <input type="number" id="income" value="3000" oninput="calculateRate()">
+        </div>
+
+        <div class="form-group">
+          <label for="expenses">Monthly Expenses (Software, Hosting, Tax Reserve) ($)</label>
+          <input type="number" id="expenses" value="500" oninput="calculateRate()">
+        </div>
+
+        <div class="form-group">
+          <label for="hours">Billable Hours Per Week</label>
+          <input type="number" id="hours" value="25" oninput="calculateRate()">
+        </div>
+
+        <div class="form-group">
+          <label for="estimatedHours">Estimated Project Hours (For Project Quote)</label>
+          <input type="number" id="estimatedHours" value="20" oninput="calculateRate()">
+        </div>
+      </div>
+
+      <!-- RESULTS DISPLAY -->
+      <div class="card">
+        <h2>Calculation Results</h2>
+        <div class="result-box">
+          <div class="stat">
+            <div class="stat-label">Minimum Hourly Rate</div>
+            <div class="stat-value" id="hourlyRate">$35.00 / hr</div>
+          </div>
+
+          <div class="stat">
+            <div class="stat-label">Recommended Project Quote</div>
+            <div class="stat-value" id="projectQuote">$700.00</div>
+          </div>
+
+          <div class="stat">
+            <div class="stat-label">Gross Monthly Revenue Needed</div>
+            <div class="stat-value" id="grossIncome">$3,500.00 / mo</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- RECOMMENDED TOOLS (AFFILIATE MONETIZATION AREA) -->
+    <section class="affiliates">
+      <h2 style="margin-bottom: 1rem;">Recommended Freelancer Tools</h2>
+      <div class="affiliate-grid">
+        
+        <div class="aff-card">
+          <h3>Wise Business</h3>
+          <p>Receive foreign currency payments from international clients with minimal conversion fees.</p>
+          <a href="#" class="aff-link" target="_blank">Get Started &rarr;</a>
+        </div>
+
+        <div class="aff-card">
+          <h3>FreshBooks</h3>
+          <p>Create professional invoices, manage client contracts, and track billable time automatically.</p>
+          <a href="#" class="aff-link" target="_blank">Try Free &rarr;</a>
+        </div>
+
+        <div class="aff-card">
+          <h3>Bonsai Legal</h3>
+          <p>Pre-made legal contract templates tailored for freelance developers and designers.</p>
+          <a href="#" class="aff-link" target="_blank">Explore Templates &rarr;</a>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- SEO GUIDE CONTENT -->
+    <section class="content-section">
+      <h2>How to Price Your Freelance Projects Correctly</h2>
+      <p>Many freelancers make the mistake of charging based on simple hourly targets without taking non-billable overhead into account. Admin work, client communication, self-employment taxes, and software costs often consume 30% to 40% of working hours.</p>
+      
+      <p>Using a target net-income model guarantees that business operational costs are covered prior to profit taking, ensuring long-term freelance sustainability.</p>
+    </section>
+
+    <footer>
+      <p>&copy; 2026 Freelance Rate Tool. Designed for digital creators.</p>
+    </footer>
+  </div>
+
+  <!-- CALCULATOR LOGIC -->
+  <script>
+    function calculateRate() {
+      const income = parseFloat(document.getElementById('income').value) || 0;
+      const expenses = parseFloat(document.getElementById('expenses').value) || 0;
+      const hoursPerWeek = parseFloat(document.getElementById('hours').value) || 1;
+      const estProjectHours = parseFloat(document.getElementById('estimatedHours').value) || 0;
+
+      // 4.33 weeks in an average month
+      const monthlyHours = hoursPerWeek * 4.33;
+      const requiredGross = income + expenses;
+      
+      const hourlyRate = requiredGross / monthlyHours;
+      const projectPrice = hourlyRate * estProjectHours;
+
+      document.getElementById('hourlyRate').innerText = '$' + hourlyRate.toFixed(2) + ' / hr';
+      document.getElementById('projectQuote').innerText = '$' + projectPrice.toFixed(2);
+      document.getElementById('grossIncome').innerText = '$' + requiredGross.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2}) + ' / mo';
+    }
+
+    // Run calculation once page loads
+    calculateRate();
+  </script>
+</body>
+</html>
